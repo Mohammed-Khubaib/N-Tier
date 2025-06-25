@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pgadmin-config
+  namespace: fastapi-app
+data:
+  PGADMIN_DEFAULT_EMAIL: "admin@admin.com"
+  PGADMIN_DEFAULT_PASSWORD: "admin"
+  PGADMIN_CONFIG_SERVER_MODE: "True"

@@ -1,0 +1,18 @@
+[project]
+name = "task-management-api"
+version = "0.1.0"
+description = "A FastAPI task management application"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi>=0.115.13",
+    "psycopg2-binary>=2.9.10",
+    "pydantic-settings>=2.10.0",
+    "pydantic[email]>=2.11.7",
+    "python-multipart>=0.0.20",
+    "sqlalchemy>=2.0.41",
+    "uvicorn>=0.34.3",
+    "requests>=2.32.4",
+    "pandas>=2.3.0",
+    "streamlit>=1.46.0",
+]

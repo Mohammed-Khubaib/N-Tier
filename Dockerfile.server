@@ -1,0 +1,26 @@
+# Use a lightweight base image with Python 3.12
+FROM python:3.13-slim
+
+# Install uv (Python package manager)
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
+
+# Set working directory
+WORKDIR /app
+
+# Copy only required files to install dependencies
+COPY pyproject.toml uv.lock ./
+
+# Install dependencies in isolated environment
+RUN uv sync --frozen --no-cache
+
+# Copy the .env file
+COPY .env ./
+
+# Copy only the FastAPI application code (app folder)
+COPY app ./app
+
+# Expose the port the app will run on
+EXPOSE 8000
+
+# Command to run the application
+CMD ["uv", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

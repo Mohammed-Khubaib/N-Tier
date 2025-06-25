@@ -1,0 +1,25 @@
+# Dockerfile.client - for the Streamlit frontend app
+
+FROM python:3.13-slim
+
+# Install uv
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
+
+# Set working directory
+WORKDIR /app
+
+# Copy only required files
+COPY pyproject.toml uv.lock ./
+
+# Install dependencies
+RUN uv sync --frozen --no-cache
+
+# Copy client source code
+COPY client ./client
+COPY main.py main.py
+
+# Expose port used by Streamlit
+EXPOSE 8501
+
+# Run the Streamlit app
+CMD ["uv", "run", "streamlit", "run", "main.py", "--server.address", "0.0.0.0"]

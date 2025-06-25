@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: streamlit-client
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.client.replicas }}
+  selector:
+    matchLabels:
+      app: streamlit-client
+  template:
+    metadata:
+      labels:
+        app: streamlit-client
+    spec:
+      containers:
+      - name: streamlit-client
+        image: {{ .Values.client.image }}
+        ports:
+        - containerPort: {{ .Values.client.service.port }}
+        env:
+        - name: API_BASE_URL
+          value: "http://fastapi-api-service:{{ .Values.api.service.port }}"

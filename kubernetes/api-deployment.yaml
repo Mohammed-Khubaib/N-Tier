@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi-api
+  namespace: fastapi-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fastapi-api
+  template:
+    metadata:
+      labels:
+        app: fastapi-api
+    spec:
+      containers:
+      - name: fastapi-api
+        image: mohammedkhubaib/fastapi-server:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DATABASE_URL
+          value: "postgresql://postgres:postgres@postgres-service:5432/postgres"

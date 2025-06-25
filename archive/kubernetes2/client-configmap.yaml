@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: client-config
+  namespace: fastapi-app
+data:
+  API_BASE_URL: "http://fastapi-api-service:8000"

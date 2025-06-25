@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: streamlit-client
+  namespace: fastapi-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: streamlit-client
+  template:
+    metadata:
+      labels:
+        app: streamlit-client
+    spec:
+      containers:
+      - name: streamlit-client
+        image: mohammedkhubaib/streamlit-client:latest
+        ports:
+        - containerPort: 8501
+        env:
+        - name: API_BASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: client-config
+              key: API_BASE_URL
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+      initContainers:
+      - name: wait-for-api
+        image: busybox:1.35
+        command: ['sh', '-c', 'until nc -z fastapi-api-service 8000; do sleep 1; done']

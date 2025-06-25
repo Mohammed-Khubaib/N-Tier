@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: streamlit-client-service
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    app: streamlit-client
+  ports:
+  - port: {{ .Values.client.service.port }}
+    targetPort: {{ .Values.client.service.port }}
+    nodePort: {{ .Values.client.service.nodePort }}
+  type: NodePort
