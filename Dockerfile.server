@@ -14,7 +14,7 @@ COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-cache
 
 # Copy the .env file
-COPY .env ./
+# COPY .env ./
 
 # Copy only the FastAPI application code (app folder)
 COPY app ./app

@@ -1,0 +1,74 @@
+name: N-tier
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '**/*'
+
+jobs:
+  build:
+    name: CI/CD
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: "0.7.13"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: "pyproject.toml"
+
+      - name: Install the project
+        run: uv sync
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      
+      - name: Log in to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USRNAME }}
+          password: ${{ secrets.DOCKERHUB_PSWD }}
+      
+      - name: Extract Commit Short SHA
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Build & Push Docker Image
+        run: |
+          docker build --file Dockerfile.server --tag ${{ secrets.DOCKERHUB_USRNAME }}/fastapi-server:${{ steps.vars.outputs.sha_short }} .
+          docker build --file Dockerfile.client --tag ${{ secrets.DOCKERHUB_USRNAME }}/streamlit-client:${{ steps.vars.outputs.sha_short }} .
+          docker push ${{ secrets.DOCKERHUB_USRNAME }}/fastapi-server:${{ steps.vars.outputs.sha_short }}
+          docker push ${{ secrets.DOCKERHUB_USRNAME }}/streamlit-client:${{ steps.vars.outputs.sha_short }}
+
+      - name: Install yq (Parse YAML)
+        run: |
+          sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 
+          sudo chmod +x /usr/local/bin/yq
+      
+      - name: Update Helm values.yaml
+        run: |
+          SHA=${{ steps.vars.outputs.sha_short }}
+          USERNAME=${{ secrets.DOCKERHUB_USRNAME }}
+
+          yq eval -i ".api.image = \"${USERNAME}/fastapi-server:${SHA}\"" helm/values.yaml
+          yq eval -i ".client.image = \"${USERNAME}/streamlit-client:${SHA}\"" helm/values.yaml
+      
+      - name: Commit & Push changes to repo
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          
+          if [ -n "$(git status -s)" ]; then
+            git add helm/values.yaml
+            git commit -m "chore(helm): update image tag to ${{ steps.vars.outputs.sha_short }}"
+            git push
+          else
+            echo "No changes in helm/values.yaml. Skipping commit."
+          fi
