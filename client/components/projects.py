@@ -15,7 +15,7 @@ def render_projects_page():
         st.header("Project Operations")
         operation = st.selectbox(
             "Choose Operation",
-            ["View All Projects", "View Project Details", "Create Project", "Update Project", "Delete Project"]
+            ["Create Project", "Update Project", "Delete Project", "View All Projects", "View Project Details"]
         )
     
     if operation == "View All Projects":

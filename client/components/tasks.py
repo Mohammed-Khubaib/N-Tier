@@ -18,7 +18,7 @@ def render_tasks_page():
         st.header("Task Operations")
         operation = st.selectbox(
             "Choose Operation",
-            ["View All Tasks", "View Task Details", "Create Task", "Update Task", "Delete Task"]
+            ["Create Task", "Update Task", "Delete Task", "View All Tasks", "View Task Details"]
         )
     
     if operation == "View All Tasks":

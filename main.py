@@ -126,6 +126,7 @@ def main():
     st.sidebar.markdown("---")
     st.sidebar.subheader("⚙️ Configuration")
     st.sidebar.write(f"**API URL:** {config.api_base_url}")
+    st.sidebar.write("**POD API URL:** http://localhost:30000")
     st.sidebar.write(f"**Timeout:** {config.timeout}s")
     
     # Connection test button

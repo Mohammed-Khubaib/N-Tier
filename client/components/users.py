@@ -16,7 +16,7 @@ def render_users_page():
         st.header("User Operations")
         operation = st.selectbox(
             "Choose Operation",
-            ["View All Users", "View User Details", "Create User", "Update User", "Delete User"]
+            ["Create User", "Update User", "Delete User", "View All Users", "View User Details"]
         )
     
     if operation == "View All Users":
