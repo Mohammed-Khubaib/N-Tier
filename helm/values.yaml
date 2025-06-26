@@ -21,7 +21,7 @@ api:
 # Streamlit Client configuration
 client:
   image: mohammedkhubaib/streamlit-client:latest
-  replicas: 1
+  replicas: 2
   service:
     port: 8501
     nodePort: 30001
