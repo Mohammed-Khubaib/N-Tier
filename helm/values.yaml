@@ -1,6 +1,5 @@
 # Global settings
 namespace: fastapi-app
-
 # PostgreSQL configuration
 postgres:
   image: postgres:16
@@ -9,23 +8,20 @@ postgres:
   database: postgres
   service:
     port: 5432
-
 # FastAPI API configuration
 api:
-  image: mohammedkhubaib/fastapi-server:latest
+  image: mohammedkhubaib/fastapi-server:b7f4131
   replicas: 1
   service:
     port: 8000
     nodePort: 30000
-
 # Streamlit Client configuration
 client:
-  image: mohammedkhubaib/streamlit-client:latest
+  image: mohammedkhubaib/streamlit-client:b7f4131
   replicas: 2
   service:
     port: 8501
     nodePort: 30001
-
 # PgAdmin configuration
 pgadmin:
   image: dpage/pgadmin4:latest
