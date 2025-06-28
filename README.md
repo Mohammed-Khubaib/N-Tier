@@ -227,28 +227,15 @@ kubectl delete namespace argocd
 
 ### CI/CD Flow Diagram
 
-```mermaid
-flowchart TD
-    A[Code Push to Main] --> B[GitHub Actions Triggered]
-    B --> C[Setup UV & Python]
-    C --> D[Install Dependencies]
-    D --> E[Build Docker Images]
-    E --> F[Push to DockerHub]
-    F --> G[Update Helm values.yaml]
-    G --> H[Commit & Push Changes]
-    H --> I[ArgoCD Detects Changes]
-    I --> J[Auto Sync to Kubernetes]
-    J --> K[Application Updated]
-   
-```
+![img](assets/CICD_Pipeline_Image.png)
 
 ### Pipeline Features
 
 - **Continuous Integration:**
   - Automated Docker image builds
   - Automatic tagging with commit SHA
-  - Automatic Helm values update
   - DockerHub registry push
+  - Automatic Helm values update
 
 - **Continuous Deployment:**
   - GitOps approach with ArgoCD
