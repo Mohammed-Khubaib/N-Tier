@@ -8,10 +8,10 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 WORKDIR /app
 
 # Copy only required files to install dependencies
-COPY pyproject.toml uv.lock ./
+COPY pyproject.toml ./
 
 # Install dependencies in isolated environment
-RUN uv sync --frozen --no-cache
+RUN uv sync
 
 # Copy the .env file
 # COPY .env ./

@@ -88,6 +88,13 @@ jobs:
           yq eval -i ".api.image = \"${USERNAME}/fastapi-server:${SHA}\"" helm/values.yaml
           yq eval -i ".client.image = \"${USERNAME}/streamlit-client:${SHA}\"" helm/values.yaml
 
+      - name: Upload updated values.yaml
+        uses: actions/upload-artifact@v4
+        with:
+          name: updated-values
+          path: helm/values.yaml
+
+
   commit:
     name: Commit Helm Changes
     runs-on: ubuntu-latest
@@ -96,14 +103,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Download updated values.yaml
+        uses: actions/download-artifact@v4
+        with:
+          name: updated-values
+          path: helm
+
       - name: Commit & Push values.yaml
         run: |
-          git config --global user.name "github-actions"
+          git config --global user.name "Mohammed-Khubaib"
           git config --global user.email "github-actions@github.com"
 
-          if [ -n "$(git status -s)" ]; then
+          if ! git diff --quiet helm/values.yaml; then
             git add helm/values.yaml
             git commit -m "chore(helm): update image tag to ${{ needs.setup.outputs.sha_short }}"
             git push
           else
             echo "No changes in helm/values.yaml. Skipping commit."
+          fi
