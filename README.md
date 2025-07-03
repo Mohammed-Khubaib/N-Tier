@@ -174,7 +174,7 @@ kubectl delete namespace fastapi-app
 ```
 
 ### 5. ArgoCD Setup
-
+![argocd setup](assets/argocd_setup.png)
 #### Install ArgoCD
 
 ```bash
