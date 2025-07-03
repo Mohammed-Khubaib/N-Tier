@@ -1,4 +1,5 @@
 name: N-tier
+
 on:
   push:
     branches:
@@ -15,9 +16,12 @@ on:
       - '.github/workflows/**'
 
 jobs:
-  build:
-    name: CI/CD
+  setup:
+    name: Setup Environment
     runs-on: ubuntu-latest
+
+    outputs:
+      sha_short: ${{ steps.vars.outputs.sha_short }}
 
     steps:
       - uses: actions/checkout@v4
@@ -34,49 +38,72 @@ jobs:
 
       - name: Install the project
         run: uv sync
-      
+
+      - name: Extract Commit Short SHA
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+
+  docker:
+    name: Build & Push Docker Images
+    runs-on: ubuntu-latest
+    needs: setup
+
+    steps:
+      - uses: actions/checkout@v4
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-      
+
       - name: Log in to DockerHub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USRNAME }}
           password: ${{ secrets.DOCKERHUB_PSWD }}
-      
-      - name: Extract Commit Short SHA
-        id: vars
-        run: echo "sha_short=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
 
-      - name: Build & Push Docker Image
+      - name: Build & Push Docker Images
         run: |
-          docker build --file Dockerfile.server --tag ${{ secrets.DOCKERHUB_USRNAME }}/fastapi-server:${{ steps.vars.outputs.sha_short }} .
-          docker build --file Dockerfile.client --tag ${{ secrets.DOCKERHUB_USRNAME }}/streamlit-client:${{ steps.vars.outputs.sha_short }} .
-          docker push ${{ secrets.DOCKERHUB_USRNAME }}/fastapi-server:${{ steps.vars.outputs.sha_short }}
-          docker push ${{ secrets.DOCKERHUB_USRNAME }}/streamlit-client:${{ steps.vars.outputs.sha_short }}
+          SHA=${{ needs.setup.outputs.sha_short }}
+          docker build --file Dockerfile.server --tag ${{ secrets.DOCKERHUB_USRNAME }}/fastapi-server:${SHA} .
+          docker build --file Dockerfile.client --tag ${{ secrets.DOCKERHUB_USRNAME }}/streamlit-client:${SHA} .
+          docker push ${{ secrets.DOCKERHUB_USRNAME }}/fastapi-server:${SHA}
+          docker push ${{ secrets.DOCKERHUB_USRNAME }}/streamlit-client:${SHA}
 
-      - name: Install yq (Parse YAML)
+  helm:
+    name: Update Helm Values
+    runs-on: ubuntu-latest
+    needs: docker
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install yq
         run: |
           sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 
           sudo chmod +x /usr/local/bin/yq
-      
-      - name: Update Helm values.yaml
-        run: |
-          SHA=${{ steps.vars.outputs.sha_short }}
-          USERNAME=${{ secrets.DOCKERHUB_USRNAME }}
 
+      - name: Update values.yaml
+        run: |
+          SHA=${{ needs.setup.outputs.sha_short }}
+          USERNAME=${{ secrets.DOCKERHUB_USRNAME }}
           yq eval -i ".api.image = \"${USERNAME}/fastapi-server:${SHA}\"" helm/values.yaml
           yq eval -i ".client.image = \"${USERNAME}/streamlit-client:${SHA}\"" helm/values.yaml
-      
-      - name: Commit & Push changes to repo
+
+  commit:
+    name: Commit Helm Changes
+    runs-on: ubuntu-latest
+    needs: helm
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Commit & Push values.yaml
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-          
+
           if [ -n "$(git status -s)" ]; then
             git add helm/values.yaml
-            git commit -m "chore(helm): update image tag to ${{ steps.vars.outputs.sha_short }}"
+            git commit -m "chore(helm): update image tag to ${{ needs.setup.outputs.sha_short }}"
             git push
           else
             echo "No changes in helm/values.yaml. Skipping commit."
-          fi
