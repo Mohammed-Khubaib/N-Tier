@@ -100,7 +100,7 @@ jobs:
   commit:
     name: Commit Helm Changes
     runs-on: ubuntu-latest
-    needs: helm
+    needs: [helm, setup]
 
     steps:
       - uses: actions/checkout@v4
