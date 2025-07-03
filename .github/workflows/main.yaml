@@ -86,7 +86,7 @@ jobs:
           SHA=${{ needs.setup.outputs.sha_short }}
           USERNAME=${{ secrets.DOCKERHUB_USRNAME }}
           echo "Injecting SHA: $SHA"
-          
+
           yq eval -i ".api.image = \"${USERNAME}/fastapi-server:${SHA}\"" helm/values.yaml
           yq eval -i ".client.image = \"${USERNAME}/streamlit-client:${SHA}\"" helm/values.yaml
 
@@ -114,12 +114,15 @@ jobs:
       - name: Commit & Push values.yaml
         run: |
           git config --global user.name "Mohammed-Khubaib"
-          git config --global user.email "${EMAIL}"
+          git config --global user.email "{EMAIL}"
+
+          SHA="${{ needs.setup.outputs.sha_short }}"
 
           if ! git diff --quiet helm/values.yaml; then
             git add helm/values.yaml
-            git commit -m "chore(helm): update image tag to ${{ needs.setup.outputs.sha_short }}"
+            git commit -m "chore(helm): update image tag to ${SHA}"
             git push
           else
             echo "No changes in helm/values.yaml. Skipping commit."
           fi
+
