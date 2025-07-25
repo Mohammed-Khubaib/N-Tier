@@ -4,8 +4,9 @@ on:
     branches:
       - main
     paths:
+      - '.github/workflows/docs_ci.yaml'
       - 'docs/**'
-      - mkdocs.yml
+      - 'mkdocs.yml'
 permissions:
   contents: write
 jobs:
@@ -41,4 +42,5 @@ jobs:
             mkdocs-material-
 
       - name: Deploy MkDocs
-        run: mkdocs gh-deploy --force
+        run: uv run --no-group dev --group docs mkdocs gh-deploy --force
+        
