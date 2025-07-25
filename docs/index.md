@@ -1,3 +1,8 @@
+---
+hide:
+   - navigation
+#    - toc
+---
 # N-Tier Application with Automated CI/CD Pipeline
 
 A complete 3-tier web application with FastAPI backend, Streamlit frontend, and PostgreSQL database, featuring automated CI/CD pipeline using Docker, Kubernetes, Helm, GitHub Actions, and ArgoCD.
@@ -39,20 +44,23 @@ architecture-beta
 ### 1. Python Environment Setup with UV
 
 - **Install UV** (if not already installed):
-   ```bash
+
+    ```bash
     # macOS using Homebrew (recommended)
     brew install uv
-    
+
     # macOS/Linux using installer
     curl -LsSf https://astral.sh/uv/install.sh | sh
-    
+
     # Windows
     powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
-    
+
     # Using pip
     pip install uv
     ```
+
 - Setting up UV (Python's Package Manager):
+
     ```bash
     # Initialize UV project
     uv init --name n-tier --app
@@ -66,6 +74,7 @@ architecture-beta
     # Install dependencies
     uv sync
     ```
+
 - Run The Application locally:
     - Run API(FastAPI)
         ```bash
@@ -88,31 +97,34 @@ docker build -f Dockerfile.server -t <dockerhub-user-name>/fastapi-server:latest
 docker build -f Dockerfile.client -t <dockerhub-user-name>/streamlit-client:latest .
 ```
 
-#### Push to DockerHub
+#### Push to DockerHub/ghcr
 
 ```bash
 # Login to DockerHub
-docker login
+docker login -u <username(dockerhub/ghcr.io)>
 
 # Push images
-docker push <dockerhub-user-name>/fastapi-server:latest
-docker push <dockerhub-user-name>/streamlit-client:latest
+docker push <dockerhub/ghcr.io-user-name>/fastapi-server:latest
+docker push <dockerhub/ghcr.io-user-name>/streamlit-client:latest
 ```
 
 #### Test with Docker Compose
 
-```bash
-# Start application stack
-docker compose up -d
+- Update the username in the docker-compose file if you want then execute the following commands:
 
-# View logs
-docker compose logs -f
+    ```bash
+    # Start application stack
+    docker compose up -d
 
-# Stop and cleanup
-docker compose down
-```
+    # View logs
+    docker compose logs -f
+
+    # Stop and cleanup
+    docker compose down
+    ```
 
 **Access Points:**
+
 - **Frontend:** http://localhost:8501
 - **API:** http://localhost:8000
 - **PgAdmin:** http://localhost:5050
@@ -174,7 +186,7 @@ kubectl delete namespace fastapi-app
 ```
 
 ### 5. ArgoCD Setup
-![argocd setup](./docs/assets/argocd_setup.png)
+![argocd setup](assets/argocd_setup.png)
 #### Install ArgoCD
 
 ```bash
@@ -199,6 +211,7 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 ```
 
 **ArgoCD Access:** https://localhost:8080
+
 - **Username:** admin
 - **Password:** (from command above)
 
@@ -227,21 +240,23 @@ kubectl delete namespace argocd
 
 ### CI/CD Flow Diagram
 
-![img](./docs/assets/CICD_Pipeline_Image.png)
+![img](assets/CICD_Pipeline_Image.png)
 
 ### Pipeline Features
 
 - **Continuous Integration:**
-  - Automated Docker image builds
-  - Automatic tagging with commit SHA
-  - DockerHub registry push
-  - Automatic Helm values update
+
+    - Automated Docker image builds
+    - Automatic tagging with commit SHA
+    - DockerHub registry push
+    - Automatic Helm values update
 
 - **Continuous Deployment:**
-  - GitOps approach with ArgoCD
-  - Auto Sync with Updated Helm values
-  - Self-healing deployments
-  - Rollback capabilities
+
+    - GitOps approach with ArgoCD
+    - Auto Sync with Updated Helm values
+    - Self-healing deployments
+    - Rollback capabilities
 
 ### Pipeline Triggers
 
@@ -278,6 +293,7 @@ DOCKERHUB_PSWD=your_dockerhub_password
 3. **Deployment:** Kubernetes with Helm charts
 4. **Production:** Automated CI/CD with ArgoCD
 
+
 ## 🔍 Monitoring & Debugging
 
 ```bash
@@ -292,6 +308,8 @@ argocd app get test-three-tier-app
 # Monitor resource usage
 kubectl top pods -n fastapi-app
 ```
+
 ---
 
-**Note:** Ensure OrbStack or another local Kubernetes solution is running before executing Kubernetes commands.
+!!! Note
+    Ensure OrbStack or another local Kubernetes solution is running before executing Kubernetes commands.

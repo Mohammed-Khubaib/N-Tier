@@ -1,0 +1,182 @@
+# Site Information
+site_name: "N-Tier Application"
+site_description: "Setup a N-Tier application Using Docker, Kubernetes and Helm. Setup a CI/CD Pipeline using Github Action and ArgoCD"
+site_author: "Khubaib,"
+site_url: "https://github.com/Mohammed-Khubaib/N-Tier"
+
+# Repository Information
+repo_name: "N Tier"
+repo_url: "https://github.com/Mohammed-Khubaib/N-Tier"
+edit_uri: "edit/main/docs/"
+
+# Configuration
+theme:
+  name: material
+  logo: assets/n-tier-logo.svg
+  favicon: assets/n-tier-logo.svg
+  language: en
+  palette:
+    # Palette toggle for light mode
+    scheme: astral-dark
+    #   # primary: amber
+    #   # accent: blue
+    #   toggle:
+    #     icon: material/brightness-7
+    #     name: Switch to dark mode
+    # # Palette toggle for dark mode
+    # - scheme: astral-light
+    #   primary: blue
+    #   accent: blue
+    #   toggle:
+    #     icon: material/brightness-4
+    #     name: Switch to light mode
+  
+  font:
+    text: "M PLUS Rounded 1c"
+    code: Roboto Mono
+  
+  features:
+    # - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.indexes
+    - navigation.footer
+    - navigation.instant.progress
+    - navigation.path
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
+    - toc.follow
+    # - toc.integrate
+    - content.tabs.link
+    - content.code.annotate
+    - content.code.copy
+    # - navigation.expand
+    # - content.action.edit
+    # - content.action.view
+  
+  icon:
+    repo: fontawesome/brands/git-alt
+    edit: material/pencil
+    view: material/eye
+    admonition:
+      note: octicons/tag-16
+      abstract: octicons/checklist-16
+      info: octicons/info-16
+      tip: octicons/squirrel-16
+      success: octicons/check-16
+      question: octicons/question-16
+      warning: octicons/alert-16
+      failure: octicons/x-circle-16
+      danger: octicons/zap-16
+      bug: octicons/bug-16
+      example: octicons/beaker-16
+      quote: octicons/quote-16
+
+# Navigation Structure
+nav:
+  - N-Tier: index.md
+
+# Plugins
+plugins:
+  - search:
+      separator: '[\s\-,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+  - minify:
+      minify_html: true
+  - git-revision-date-localized:
+      enable_creation_date: true
+      type: timeago
+  - git-committers:
+      repository: your-username/your-repo-name
+      branch: main
+  - tags
+
+# Markdown Extensions
+markdown_extensions:
+  - abbr
+  - admonition
+  - pymdownx.details
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  # - toc:
+  #     permalink: true
+  #     toc_depth: 4
+  - pymdownx.snippets:
+  - toc:
+      anchorlink: true
+      anchorlink_class: "toclink"
+      # toc_depth: 1
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.emoji:
+      # emoji_generator: !!python/name:materialx.emoji.to_svg
+      # emoji_index: !!python/name:materialx.emoji.twemoji
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.magiclink:
+      # repo_url_shorthand: true
+      # user: your-username
+      # repo: your-repo-name
+  - pymdownx.inlinehilite:
+  - pymdownx.superfences:
+  - markdown.extensions.attr_list:
+  - pymdownx.keys:
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          # format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+# Extra CSS and JavaScript
+extra_css:
+  - stylesheets/extra.css
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+# Extra Configuration
+extra:
+  version:
+    provider: mike
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Mohammed-Khubaib
+    - icon: fontawesome/brands/github
+      link: https://github.com/Syed-Rehan-21
+  tags:
+    DevOps: devops
+    Cloud: cloud
+    Containers: containers
+    Kubernetes: k8s
+    Infrastructure: infrastructure
+    Monitoring: monitoring
+    CI/CD: cicd
+
+# Copyright
+copyright: Copyright &copy; 2025 Mohammed Khubaib | Syed Rehan
