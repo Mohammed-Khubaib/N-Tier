@@ -4,7 +4,11 @@ version = "0.1.0"
 description = "A FastAPI task management application"
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = [
+dependencies = []
+
+[dependency-groups]
+# FastAPI Backend
+backend = [
     "fastapi>=0.115.13",
     "psycopg2-binary>=2.9.10",
     "pydantic-settings>=2.10.0",
@@ -12,7 +16,60 @@ dependencies = [
     "python-multipart>=0.0.20",
     "sqlalchemy>=2.0.41",
     "uvicorn>=0.34.3",
+]
+# Streamlit Frontend
+frontend = [
     "requests>=2.32.4",
     "pandas>=2.3.0",
     "streamlit>=1.46.0",
 ]
+#Mkdocs
+docs = [
+    "mkdocs-material>=9.6.15",
+    "mkdocs-minify-plugin>=0.8.0",
+    "mkdocs-git-revision-date-localized-plugin>=1.4.7",
+    "mkdocs-git-committers-plugin-2>=2.5.0",
+]
+
+# Optional: combined groups for convenience
+dev = [
+    {include-group = "backend"},
+    {include-group = "frontend"},
+    {include-group = "docs"},
+]
+
+# Install Only (Backend/Frontend/Documentation) Dependencies:
+
+# uv sync --no-group dev --group backend
+# uv sync --no-group dev --group frontend
+# uv sync --no-group dev --group docs
+#  ---
+# Install Multiple Groups :
+# uv sync --no-group dev --group backend --group frontend
+# ---
+# Install All Development Dependencies
+# uv sync --group dev
+# or simply
+# uv sync  # (dev group is included by default)
+
+# ---
+#Adding Dependencies to Specific Groups
+# # Add a package to the backend group
+# uv add --group backend redis
+
+# # Add a package to the frontend group  
+# uv add --group frontend plotly
+
+# # Add a package to the docs group
+# uv add --group docs mkdocs-awesome-pages-plugin
+
+#---
+# Running Commands with Specific Groups
+# # Run with only backend dependencies
+# uv run --no-group dev --group backend python -m uvicorn main:app
+
+# # Run with only frontend dependencies  
+# uv run --no-group dev --group frontend streamlit run app.py
+
+# # Run with only docs dependencies
+# uv run --no-group dev --group docs mkdocs serve

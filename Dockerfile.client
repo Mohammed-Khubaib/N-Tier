@@ -12,7 +12,7 @@ WORKDIR /app
 COPY pyproject.toml ./
 
 # Install dependencies
-RUN uv sync
+RUN uv sync --no-cache --no-group dev --group frontend
 
 # Copy client source code
 COPY client ./client

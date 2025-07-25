@@ -11,7 +11,7 @@ WORKDIR /app
 COPY pyproject.toml ./
 
 # Install dependencies in isolated environment
-RUN uv sync
+RUN uv sync --no-cache --no-group dev --group backend 
 
 # Copy the .env file
 # COPY .env ./
