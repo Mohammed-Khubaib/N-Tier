@@ -10,14 +10,14 @@ postgres:
     port: 5432
 # FastAPI API configuration
 api:
-  image: 'mohammedkhubaib/fastapi-server:70bc88d'
+  image: 'mohammedkhubaib/fastapi-server:b489cd6'
   replicas: 1
   service:
     port: 8000
     nodePort: 30000
 # Streamlit Client configuration
 client:
-  image: 'mohammedkhubaib/streamlit-client:70bc88d'
+  image: 'mohammedkhubaib/streamlit-client:b489cd6'
   replicas: 2
   service:
     port: 8501
