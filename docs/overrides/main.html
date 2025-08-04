@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+  {{ super() }}
+  <!-- Open Graph meta tags -->
+  <meta property="og:title" content="N-Tier Application" />
+  <meta property="og:description" content="Setup a N-Tier application Using Docker, Kubernetes and Helm. Setup a CI/CD Pipeline using Github Action and ArgoCD" />
+  <meta property="og:image" content="https://raw.githubusercontent.com/Mohammed-Khubaib/N-Tier/main/docs/assets/CICD_Pipeline_Image.png" />
+  <meta property="og:url" content="https://mohammed-khubaib.github.io/N-Tier" />
+  <meta property="og:type" content="website" />
+{% endblock %}

@@ -2,7 +2,7 @@
 site_name: "N-Tier Application"
 site_description: "Setup a N-Tier application Using Docker, Kubernetes and Helm. Setup a CI/CD Pipeline using Github Action and ArgoCD"
 site_author: "Khubaib,"
-site_url: "https://github.com/Mohammed-Khubaib/N-Tier"
+site_url: "https://mohammed-khubaib.github.io/N-Tier"
 
 # Repository Information
 repo_name: "N Tier"
@@ -12,6 +12,7 @@ edit_uri: "edit/main/docs/"
 # Configuration
 theme:
   name: material
+  custom_dir: docs/overrides
   logo: assets/n-tier-logo.svg
   favicon: assets/n-tier-logo.svg
   language: en
@@ -89,7 +90,7 @@ plugins:
       enable_creation_date: true
       type: timeago
   - git-committers:
-      repository: your-username/your-repo-name
+      repository: Mohammed-Khubaib/N-Tier
       branch: main
   - tags
 
