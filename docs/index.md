@@ -311,5 +311,9 @@ kubectl top pods -n fastapi-app
 
 ---
 
-!!! Note
+!!! abstract "Note"
     Ensure OrbStack or another local Kubernetes solution is running before executing Kubernetes commands.
+
+<div align="center">
+<img src='https://visitor-badge.laobi.icu/badge?page_id=mohammed-khubaib.github.io/N-Tier&left_color=%231B3041&right_color=%23c300c3&left_text=N-Tier%20Docs%20Visitors&format=true'>
+</div>

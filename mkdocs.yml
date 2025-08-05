@@ -105,12 +105,12 @@ markdown_extensions:
   - md_in_html
   # - toc:
   #     permalink: true
-  #     toc_depth: 4
+  #     toc_depth: 2
   - pymdownx.snippets:
   - toc:
       anchorlink: true
       anchorlink_class: "toclink"
-      # toc_depth: 1
+      toc_depth: 2
   - pymdownx.arithmatex:
       generic: true
   - pymdownx.betterem:
@@ -163,6 +163,8 @@ extra_javascript:
 
 # Extra Configuration
 extra:
+  favicon: assets/n-tier-logo.png
+  generator: false  # disables the "Made with Material for MkDocs"
   version:
     provider: mike
   social:
